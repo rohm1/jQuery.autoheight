@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<title>jQuery.autoheight tests</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.autoheight.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#t1').autoheight();
+		$('#t2').autoheight({maxHeight: 150, minHeight: 50});
+		$('#t3').autoheight();
+	});
+</script>
+
+<style type="text/css">
+	#t3 {
+		transition-property: height;
+		transition-duration: 100ms;
+	}
+</style>
+
+<body>
+	<table>
+		<tr>
+			<td>
+				Default setup<br />
+				<code>$('#t1').autoheight();</code>
+			</td>
+			<td>
+				<textarea id="t1"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Custom params<br />
+				<code>$('#t2').autoheight({maxHeight: 150, minHeight: 50});</code>
+			</td>
+			<td>
+				<textarea id="t2"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Make it beautiful with CSS3 transition<br />
+				<code>$('#t3').autoheight();<br />
+				#t3 {<br />
+					&nbsp;transition-property: height;<br />
+					&nbsp;transition-duration: 100ms;<br />
+				}</code>
+			</td>
+			<td>
+				<textarea id="t3"></textarea>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>
