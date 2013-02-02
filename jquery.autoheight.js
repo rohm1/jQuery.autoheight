@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2012, rohm1 <rp@rohm1.com>.
+Copyright (c) 2012-2013, rohm1 <rp@rohm1.com>.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 (function($) {
 	$.fn.extend({
-		autoheight: function(params) {
+		autoheight: function(params, fn) {
 			var defaultParams = {maxHeight: 200, minHeight: 'auto'};
 			var styles = [
 				'width',
@@ -46,25 +46,26 @@ POSSIBILITY OF SUCH DAMAGE.
 				'margin'
 			];
 
-			if(params == undefined) {
-				params = defaultParams;
-			}
-			else {
-				for(x in defaultParams)
-					if(params[x] == undefined)
-						params[x] = defaultParams[x];
-			}
+			fn = fn != undefined ? fn : ($.isFunction(params) ? params : function() {});
+			params = params == undefined ? defaultParams : ($.isFunction(params) ? defaultParams : params);
+
+			for(x in defaultParams)
+				if(params[x] == undefined)
+					params[x] = defaultParams[x];
 
 			if($('#autoHeight_div').length == 0)
 				$('body').append( $('<div></div>').attr('id', 'autoHeight_div').css({'position': 'absolute', 'left': '-100em'}) );
 
 			$(this).each(function() {
 				$(this).data('autoheight_initHeight', params['minHeight'] == 'auto' ? $(this).height() : params['minHeight']);
-				$(this).live('input propertychange change', function() {
+				$(this).on('input change propertychange', function() {
+					var h = $(this).height();
 					for(x in styles)
 						$('#autoHeight_div').css(styles[x], $(this).css(styles[x]));
 					$('#autoHeight_div').html($(this).val().replace(new RegExp('\\n', 'g'), '<br />&nbsp;'));
-					$(this).height(Math.min(Math.max($(this).data('autoheight_initHeight'), $('#autoHeight_div').height()), params['maxHeight']));
+					var nh = Math.min(Math.max($(this).data('autoheight_initHeight'), $('#autoHeight_div').height()), params['maxHeight']);
+					if(h != nh)
+						$(this).height(nh).animate(fn.call(this, nh));
 				});
 				$(this).change();
 			});
