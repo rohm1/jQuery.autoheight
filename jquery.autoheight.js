@@ -64,8 +64,10 @@ POSSIBILITY OF SUCH DAMAGE.
 						$('#autoHeight_div').css(styles[x], $(this).css(styles[x]));
 					$('#autoHeight_div').html($(this).val().replace(new RegExp('\\n', 'g'), '<br />&nbsp;'));
 					var nh = Math.min(Math.max($(this).data('autoheight_initHeight'), $('#autoHeight_div').height()), params['maxHeight']);
-					if(h != nh)
-						$(this).height(nh).animate(fn.call(this, nh));
+					if(h != nh) {
+						$(this).height(nh);
+						fn.call(this, nh);
+					}
 				});
 				$(this).change();
 			});
